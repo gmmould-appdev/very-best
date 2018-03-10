@@ -55,12 +55,12 @@
       </script>
 
         <div class="form-group">
-          <%= f.label :cuisine_name_cont, "Cuisine:" %> <br />            
-          <% for cuisine in Cuisine.all %>            
-            <label><%= check_box_tag "q[cuisine_id_eq_any][]", cuisine.id %>            
-            <%=h cuisine.name %></label><br />            
-          <% end %>
-        </div>
+      <%= f.label :cuisine_name_cont, "Cuisine:" %> <br />
+      <% for cuisine in Cuisine.all %>
+      <label><%= check_box_tag "q[cuisine_id_eq_any][]", cuisine.id %>
+      <%=h cuisine.name %></label><br />
+    <% end %>
+    </div>
 
 <div class="form-group">
       <%= f.label :bookmarks_notes_cont, "Bookmark notes contains" %>
@@ -92,13 +92,37 @@
     <table class="table table-striped table-hover">
       <tr>
         <th>Name</th>
+        <th>Bookmarked location</th>
         <th>Cuisine</th>
         <th>Actions</th>
       </tr>
 
       <% @dishes.each do |dish| %>
       <tr>
-        <td><%= dish.name %></td>
+        <td><a href="/dishes/<%= dish.id %>" ><%= dish.name %></td>
+        <td>
+          <% if dish.bookmarks.where(:user_id => current_user.id).length > 0 %>
+          <%=Venue.find(dish.bookmarks.where(:user_id => current_user.id)[0].venue_id).name %>
+          <% else %>
+              <form action="/create_bookmark" class="form-inline" method="post">
+                   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+
+                <input type="hidden" name="dish_id" value="<%=dish.id%>">
+                <input type="hidden" name="user_id" value="<%=current_user.id%>">
+
+                <!-- Label and input for venue_id -->
+                <label for="venue_id" class="control-label sr-only">
+                  Venue
+                </label>
+              <%= select_tag("venue_id", content_tag(:option,'Choose a venue...',:value=>"")+options_from_collection_for_select(Venue.all, :id, :name), :class => "form-control") %>
+
+                <button class="btn btn-primary btn-sm">
+                  <i class="fa fa-heart"></i>
+                </button>
+              </form>
+          <% end %>
+        </td>
         <td>
           <% if dish.cuisine.present? %>
             <a href="/cuisines/<%= dish.cuisine.id %>">
