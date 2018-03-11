@@ -1,6 +1,17 @@
 class VenuesController < ApplicationController
   def index
-    @q = Venue.ransack(params[:q])
+    filters_to_apply = params[:q]
+    # If there are no defined filters, only show venues for the current user.
+    if filters_to_apply.nil?
+      filters_to_apply = {:fans_id_eq => current_user.id}
+    else
+      # If we are filtering by bookmarks, then limit it to bookmarks for this
+      # user.
+      if filters_to_apply.has_key?(:specialties_name_cont)
+        filters_to_apply[:fans_id_eq] = current_user.id
+      end
+    end
+    @q = Venue.ransack(filters_to_apply)
     @venues = @q.result(:distinct => true).includes(:bookmarks, :neighborhood, :fans, :specialties).page(params[:page]).per(10)
     @location_hash = Gmaps4rails.build_markers(@venues.where.not(:address_latitude => nil)) do |venue, marker|
       marker.lat venue.address_latitude
