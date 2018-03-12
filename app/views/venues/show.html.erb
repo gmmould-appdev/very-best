@@ -1,44 +1,21 @@
-<div class="page-header">
-  <h3>Venue #<%= @venue.id %></h3>
-</div>
-
-<div class="row">
-  <div class="col-md-12 mb-2">
-    <dl class="dl-horizontal">
-      <dt>Name</dt>
-      <dd><%= @venue.name %></dd>
-
-      <dt>Address</dt>
-      <dd>
-        <div>
+<div class="container mt-4">
+ <div class="row mt-2 justify-content-md-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+        <h4 class="card-title">
+         <%= @venue.name %></h4>
+         <% if @venue.neighborhood.present? %> 
+         <%= @venue.neighborhood.name %>
+         <%= @venue.address %>
+         <% end %>
+        </div>
+        
+        <div class="card-body">
           <div id="location_map" style="height: 480px;"></div>
         </div>
-      </dd>
+        
 
-      <dt>Neighborhood</dt>
-      <dd>
-        <% if @venue.neighborhood.present? %>
-          <a href="/neighborhoods/<%= @venue.neighborhood_id %>">
-            <%= @venue.neighborhood.name %>
-          </a>
-        <% end %>
-      </dd>
-
-    </dl>
-
-    <div class="btn-group btn-group-justified">
-      <a href="/venues" class="btn btn-primary">
-        Back
-      </a>
-      <a href="/venues/<%= @venue.id %>/edit" class="btn btn-warning">
-        Edit
-      </a>
-      <a href="/delete_venue/<%= @venue.id %>" class="btn btn-danger" rel="nofollow">
-        Delete
-      </a>
-    </div>
-  </div>
-</div>
 
 <!-- A Venue has many bookmarks -->
 
@@ -46,7 +23,7 @@
   <div class="col-md-12">
     <ul class="list-group">
       <li class="list-group-item list-group-item-info">
-        Bookmarks
+        Dishes you love here
       </li>
 
       <% @venue.bookmarks.each do |bookmark| %>
@@ -106,44 +83,13 @@
   </div>
 </div>
 
-<!-- A Venue has many fans -->
-
-<div class="row">
-  <div class="col-md-12">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">
-        Fans
-      </li>
-
-      <% @venue.fans.each do |user| %>
-        <li class="list-group-item">
-          <a href="/users/<%= user.id %>">
-            <%= user.username %>
-          </a>
-          <div class="btn-group btn-group-xs float-right">
-            <a href="/users/<%= user.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
-            <a href="/users/<%= user.id %>/edit" class="btn btn-warning">
-              <i class="fa fa-edit"></i>
-            </a>
-            <a href="/delete_user/<%= user.id %>" class="btn btn-danger" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
-            </a>
-          </div>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-</div>
-
 <!-- A Venue has many specialties -->
 
 <div class="row">
   <div class="col-md-12">
     <ul class="list-group">
       <li class="list-group-item list-group-item-info">
-        Specialties
+        Popular dishes here
       </li>
 
       <% @venue.specialties.each do |dish| %>
@@ -151,17 +97,7 @@
           <a href="/dishes/<%= dish.id %>">
             <%= dish.name %>
           </a>
-          <div class="btn-group btn-group-xs float-right">
-            <a href="/dishes/<%= dish.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
-            <a href="/dishes/<%= dish.id %>/edit" class="btn btn-warning">
-              <i class="fa fa-edit"></i>
-            </a>
-            <a href="/delete_dish/<%= dish.id %>" class="btn btn-danger" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
-            </a>
-          </div>
+
         </li>
       <% end %>
     </ul>
