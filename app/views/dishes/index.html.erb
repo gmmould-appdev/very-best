@@ -55,7 +55,7 @@
                 <label for="venue_id" class="control-label sr-only">
                   Venue
                 </label>
-              <%= select_tag("venue_id", content_tag(:option,'Choose a venue...',:value=>"")+options_from_collection_for_select(Venue.all, :id, :name), :class => "form-control form-control-sm mr-sm-1") %>
+              <%= select_tag("venue_id", content_tag(:option,'Choose a venue...',:value=>"")+options_from_collection_for_select(Venue.order(name: :asc), :id, :name), :class => "form-control form-control-sm mr-sm-1") %>
 
                 <button class="btn btn-primary btn-sm">
                   <i class="fa fa-heart"></i>
