@@ -42,7 +42,7 @@
         <td><a href="/dishes/<%= dish.id %>" ><%= dish.name %></td>
         <td>
           <% if dish.bookmarks.where(:user_id => current_user.id).length > 0 %>
-         <a href="/venues/<%= Venue.find(dish.bookmarks.where(:user_id => current_user.id)[0].venue_id).id %>"><%=Venue.find(dish.bookmarks.where(:user_id => current_user.id)[0].venue_id).name %></a> 
+         <a href="/venues/<%= Venue.find(dish.bookmarks.where(:user_id => current_user.id)[0].venue_id).id %>"><%=Venue.find(dish.bookmarks.where(:user_id => current_user.id).order(updated_at: :desc)[0].venue_id).name %></a> 
           <% else %>
               <form action="/create_bookmark" class="form-inline" method="post">
                    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
