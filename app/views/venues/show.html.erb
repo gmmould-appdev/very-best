@@ -26,13 +26,17 @@
         Dishes you loved here
       </li>
      
-      <% @venue.bookmarks.each do |bookmark| %>
-
+  
+       <% @venue.bookmarks.where(:user_id => current_user.id).each do |bookmark| %>       
+     
         <li class="list-group-item">
           <a href="/bookmarks/<%= bookmark.id %>">
             <%= bookmark.dish.name %>
           </a>
-          <div class="btn-group btn-group-xs float-right">
+          
+          <small class="float-right text-muted"> 
+          <div class="btn-group btn-group-xs">
+            <%= time_ago_in_words(bookmark.created_at) %> ago
 
             <a href="/bookmarks/<%= bookmark.id %>/edit">
               <i class="fa fa-edit"></i>
@@ -41,6 +45,7 @@
               <i class="fa fa-trash-o"></i>
             </a>
           </div>
+          </small>
         </li>
 
       <% end %>
@@ -93,7 +98,7 @@
         Popular dishes here
       </li>
 
-      <% @venue.specialties.each do |dish| %>
+      <% @venue.specialties.uniq { |p| p.name}.each do |dish| %>
         <li class="list-group-item">
           <a href="/dishes/<%= dish.id %>">
             <%= dish.name %>
