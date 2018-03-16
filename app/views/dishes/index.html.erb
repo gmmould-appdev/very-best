@@ -11,7 +11,7 @@
 
         <div class="form-group">
       <%= f.label :cuisine_id_eq_any, "Cuisine:" %> <br />
-      <% for cuisine in Cuisine.order('LOWER(name)') %>
+      <% for cuisine in Cuisine.order(name: :asc) %>
       <label>
         <% should_check_box = (params[:q].nil? or params[:q]["cuisine_id_eq_any"].nil?) ? false : params[:q]["cuisine_id_eq_any"].include?(cuisine.id.to_s) %>
         <%= check_box_tag "q[cuisine_id_eq_any][]", cuisine.id, should_check_box %>
@@ -55,7 +55,7 @@
                 <label for="venue_id" class="control-label sr-only">
                   Venue
                 </label>
-              <%= select_tag("venue_id", content_tag(:option,'Choose a venue...',:value=>"")+options_from_collection_for_select(Venue.order('LOWER(name)'), :id, :name), :class => "form-control form-control-sm mr-sm-1") %>
+              <%= select_tag("venue_id", content_tag(:option,'Choose a venue...',:value=>"")+options_from_collection_for_select(Venue.order(name: :asc), :id, :name), :class => "form-control form-control-sm mr-sm-1") %>
 
                 <button class="btn btn-primary btn-sm">
                   <i class="fa fa-heart"></i>
