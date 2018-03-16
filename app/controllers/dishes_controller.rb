@@ -1,8 +1,7 @@
 class DishesController < ApplicationController
   def index
     @q = Dish.ransack(params[:q])
-    @q.sorts = 'name asc'
-    @dishes = @q.result(:distinct => true).includes(:cuisine, :bookmarks, :fans, :specialists)
+    @dishes = @q.result(:distinct => true).includes(:cuisine, :bookmarks, :fans, :specialists).sort { |p1, p2| p1.name.downcase <=> p2.name.downcase }
 
     render("dishes/index.html.erb")
   end

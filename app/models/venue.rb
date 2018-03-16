@@ -1,6 +1,10 @@
 class Venue < ApplicationRecord
   before_validation :geocode_address
 
+  ransacker :name_case_insensitive, type: :string do
+    arel_table[:name].lower
+  end
+    
   def geocode_address
     if !Rails.env.test? && self.address.present?
       url = "http://maps.googleapis.com/maps/api/geocode/json?address=#{URI.encode(self.address)}"

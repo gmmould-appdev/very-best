@@ -12,8 +12,8 @@ class VenuesController < ApplicationController
       end
     end
     @q = Venue.ransack(filters_to_apply)
-    @q.sorts = 'name asc'
-    @venues = @q.result(:distinct => true).includes(:bookmarks, :neighborhood, :fans, :specialties).page(params[:page]).per(10)
+    @q.sorts = 'name_case_insensitive asc'
+    @venues = @q.result(:distinct => true).includes(:bookmarks, :neighborhood, :fans, :specialties)
     @location_hash = Gmaps4rails.build_markers(@venues.where.not(:address_latitude => nil)) do |venue, marker|
       marker.lat venue.address_latitude
       marker.lng venue.address_longitude
