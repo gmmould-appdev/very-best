@@ -1,6 +1,7 @@
   <div class="row mt-2 mb-1">
   <div class="col-md-3">
-    <%= search_form_for @q, :class => "collapse", :id => "dishes_filters" do |f| %>
+    <% filter_pane_class_name = params[:q].nil? ? "collapse" : "dish_search" %>
+    <%= search_form_for @q, :class => filter_pane_class_name, :id => "dishes_filters" do |f| %>
       <p class="lead">Narrow results:</p>
 
         <div class="form-group">
